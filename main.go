@@ -14,6 +14,7 @@ type Caller struct {
 	UserAgent string            `json:"user_agent"`
 	Headers   map[string]string `json:"headers"`
 	Timestamp string            `json:"timestamp"`
+	URI       string            `json:"uri"`
 }
 
 var callers []Caller
@@ -49,6 +50,7 @@ func imageHandler(w http.ResponseWriter, r *http.Request) {
 		UserAgent: r.UserAgent(),
 		Headers:   headers,
 		Timestamp: time.Now().UTC().Format("2006-01-02 - 15:04:05"),
+		URI:       r.URL.RawQuery,
 	}
 	callers = append(callers, caller)
 	saveCallersToFile()
