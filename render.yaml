@@ -1,12 +1,14 @@
-previews:
-  generation: automatic
-
 services:
-  - type: web
-    runtime: go
-    name: tracking-pixel
-    repo: https://github.com/unra73d/tracking-pixel
-    branch: main
-    buildCommand: go buid main.go main
-    startCommand: ./main
-    autoDeploy: true
+  web:
+    type: web
+    env:
+      PORT: 80 # Or your app's port
+    build:
+      context: . # Current directory
+      command: go build -o main .
+      # Or if you have a different main file: go build -o myapp .
+    image: golang:latest #Or a specific golang version, e.g., golang:1.20
+    # If your app needs other dependencies, use this instead of a simple go build:
+    # image: <your-docker-image-name>
+    # This allows using Dockerfile for better image management in large project.
+    # You would then need a Dockerfile in the root folder of your project
