@@ -4,7 +4,7 @@ services:
     name: tracking-pixel
     repo: https://github.com/unra73d/tracking-pixel
     branch: main
-    buildCommand: go buid main.go main
+    buildCommand: go mod tidy && go build
     startCommand: ./main
     autoDeploy: true
     plan: free
