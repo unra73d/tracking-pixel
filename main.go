@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 	"tracking-pixel-api/util"
 
 	"encoding/json"
@@ -12,9 +13,10 @@ import (
 )
 
 type Caller struct {
-	IP        string              `json:"ip"`
-	UserAgent string              `json:"user_agent"`
-	Headers   map[string][]string `json:"headers"`
+	IP        string            `json:"ip"`
+	UserAgent string            `json:"user_agent"`
+	Headers   map[string]string `json:"headers"`
+	Timestamp string            `json:"timestamp"`
 }
 
 var callers []Caller
@@ -37,14 +39,16 @@ func main() {
 		}
 
 		// Save caller information
-		headers := make(map[string][]string)
+		headers := make(map[string]string)
 		for key, value := range c.Request.Header {
-			headers[key] = value
+			headers[key] = value[0]
 		}
+
 		caller := Caller{
 			IP:        c.ClientIP(),
 			UserAgent: c.Request.UserAgent(),
 			Headers:   headers,
+			Timestamp: time.Now().UTC().Format("2006-01-02 - 15:04:05"), // Formatted timestamp
 		}
 		callers = append(callers, caller)
 		saveCallersToFile()
